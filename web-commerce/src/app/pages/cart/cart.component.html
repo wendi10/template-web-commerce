@@ -1,0 +1,83 @@
+<div class="cart-page">
+  <div class="page-hero">
+    <div class="page-hero__container">
+      <h1 class="page-hero__title">{{ 'cart.title' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="cart-page__container">
+    @if (loading()) {
+      <div class="cart-page__loading"><mat-spinner diameter="48"></mat-spinner></div>
+    } @else if (!cart() || cart()!.items.length === 0) {
+      <div class="cart-empty">
+        <mat-icon class="cart-empty__icon">shopping_bag</mat-icon>
+        <h2>{{ 'cart.empty' | translate }}</h2>
+        <p>{{ 'cart.emptyDesc' | translate }}</p>
+        <a routerLink="/products" mat-flat-button class="cart-empty__btn">{{ 'cart.startShopping' | translate }}</a>
+      </div>
+    } @else {
+      <div class="cart-layout">
+        <!-- Items -->
+        <div class="cart-items">
+          <h2 class="cart-items__title">{{ 'cart.items' | translate }} ({{ cart()!.total_items }})</h2>
+          @for (item of cart()!.items; track item.id) {
+            <div class="cart-item">
+              <div class="cart-item__image">
+                <img [src]="item.product?.images?.[0]?.url || 'assets/placeholder.jpg'" [alt]="item.product?.name" />
+              </div>
+              <div class="cart-item__body">
+                <div class="cart-item__header">
+                  <div>
+                    @if (item.product?.category) {
+                      <span class="cart-item__cat">{{ item.product!.category!.name }}</span>
+                    }
+                    <h3 class="cart-item__name">{{ item.product?.name }}</h3>
+                    <p class="cart-item__unit-price">{{ fmt(item.product?.price ?? 0) }} {{ 'cart.each' | translate }}</p>
+                  </div>
+                  <button mat-icon-button class="cart-item__del" (click)="remove(item)" [attr.aria-label]="'cartDrawer.remove' | translate">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </div>
+                <div class="cart-item__footer">
+                  <div class="qty-picker">
+                    <button mat-icon-button (click)="updateQty(item, -1)" [disabled]="item.quantity <= 1" [attr.aria-label]="'cartDrawer.decrease' | translate">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                    <span class="qty-picker__num">{{ item.quantity }}</span>
+                    <button mat-icon-button (click)="updateQty(item, 1)" [attr.aria-label]="'cartDrawer.increase' | translate">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                  <span class="cart-item__subtotal">{{ fmt(item.sub_total ?? 0) }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Summary -->
+        <div class="cart-summary">
+          <h2 class="cart-summary__title">{{ 'checkout.orderSummary' | translate }}</h2>
+          <div class="cart-summary__row">
+            <span>{{ 'cart.subtotal' | translate }}</span><span>{{ fmt(cart()!.sub_total) }}</span>
+          </div>
+          @if (+cart()!.discount_amount > 0) {
+            <div class="cart-summary__row cart-summary__row--discount">
+              <span>{{ 'cart.discount' | translate }}</span><span>-{{ fmt(cart()!.discount_amount) }}</span>
+            </div>
+          }
+          <div class="cart-summary__row cart-summary__row--shipping">
+            <span>{{ 'cart.shipping' | translate }}</span><span class="cart-summary__free">{{ 'cart.calculatedAtCheckout' | translate }}</span>
+          </div>
+          <div class="cart-summary__total">
+            <span>{{ 'cart.total' | translate }}</span><strong>{{ fmt(cart()!.total) }}</strong>
+          </div>
+          <button mat-flat-button class="cart-summary__btn" (click)="checkout()">
+            {{ 'cart.proceedToCheckout' | translate }}
+          </button>
+          <a routerLink="/products" class="cart-summary__continue">{{ 'cart.continueShopping' | translate }}</a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

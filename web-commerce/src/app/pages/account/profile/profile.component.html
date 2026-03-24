@@ -1,0 +1,146 @@
+<div class="account-page">
+  <div class="page-hero">
+    <div class="page-hero__container">
+      <h1 class="page-hero__title">{{ 'profile.title' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="account-page__container">
+    @if (loading()) {
+      <div class="account-loading"><mat-spinner diameter="48"></mat-spinner></div>
+    } @else {
+      <div class="profile-layout">
+        <!-- Sidebar nav -->
+        <nav class="profile-nav">
+          <a routerLink="/account/profile" class="profile-nav__item profile-nav__item--active">
+            <mat-icon>manage_accounts</mat-icon> {{ 'profile.myProfile' | translate }}
+          </a>
+          <a routerLink="/account/orders" class="profile-nav__item">
+            <mat-icon>receipt_long</mat-icon> {{ 'profile.myOrders' | translate }}
+          </a>
+          <button class="profile-nav__item profile-nav__item--logout" (click)="logout()">
+            <mat-icon>logout</mat-icon> {{ 'profile.logout' | translate }}
+          </button>
+        </nav>
+
+        <!-- Main -->
+        <div class="profile-main">
+          <!-- Profile Info -->
+          <div class="profile-section">
+            <h2 class="profile-section__title">{{ 'profile.personalInfo' | translate }}</h2>
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-form">
+              <div class="profile-form__row">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'profile.firstName' | translate }}</mat-label>
+                  <input matInput formControlName="first_name" autocomplete="given-name" />
+                  <mat-icon matPrefix>person</mat-icon>
+                  @if (profileForm.get('first_name')?.hasError('required') && profileForm.get('first_name')?.touched) {
+                    <mat-error>{{ 'profile.required' | translate }}</mat-error>
+                  }
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'profile.lastName' | translate }}</mat-label>
+                  <input matInput formControlName="last_name" autocomplete="family-name" />
+                  @if (profileForm.get('last_name')?.hasError('required') && profileForm.get('last_name')?.touched) {
+                    <mat-error>{{ 'profile.required' | translate }}</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'profile.phone' | translate }}</mat-label>
+                <input matInput formControlName="phone" />
+                <mat-icon matPrefix>phone</mat-icon>
+              </mat-form-field>
+              <button mat-flat-button type="submit" class="profile-form__save" [disabled]="saving()">
+                @if (saving()) { <mat-spinner diameter="16"></mat-spinner> } @else { {{ 'profile.saveChanges' | translate }} }
+              </button>
+            </form>
+          </div>
+
+          <!-- Addresses -->
+          <div class="profile-section">
+            <div class="profile-section__header">
+              <h2 class="profile-section__title">{{ 'profile.deliveryAddresses' | translate }}</h2>
+              <button mat-stroked-button class="profile-section__add-btn" (click)="showAddressForm.update(v => !v)">
+                <mat-icon>add</mat-icon> {{ 'profile.addAddress' | translate }}
+              </button>
+            </div>
+
+            @if (showAddressForm()) {
+              <form [formGroup]="addressForm" (ngSubmit)="addAddress()" class="address-form">
+                <div class="address-form__row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.labelPlaceholder' | translate }}</mat-label>
+                    <input matInput formControlName="label" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.recipientName' | translate }}</mat-label>
+                    <input matInput formControlName="recipient_name" />
+                  </mat-form-field>
+                </div>
+                <div class="address-form__row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.phoneField' | translate }}</mat-label>
+                    <input matInput formControlName="phone" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.postalCode' | translate }}</mat-label>
+                    <input matInput formControlName="postal_code" />
+                  </mat-form-field>
+                </div>
+                <mat-form-field appearance="outline" class="address-form__full">
+                  <mat-label>{{ 'profile.addressLine1' | translate }}</mat-label>
+                  <input matInput formControlName="address_line1" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="address-form__full">
+                  <mat-label>{{ 'profile.addressLine2' | translate }}</mat-label>
+                  <input matInput formControlName="address_line2" />
+                </mat-form-field>
+                <div class="address-form__row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.city' | translate }}</mat-label>
+                    <input matInput formControlName="city" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.province' | translate }}</mat-label>
+                    <input matInput formControlName="province" />
+                  </mat-form-field>
+                </div>
+                <div class="address-form__actions">
+                  <button mat-flat-button type="submit" class="address-form__save">{{ 'profile.saveAddress' | translate }}</button>
+                  <button mat-button type="button" (click)="showAddressForm.set(false)">{{ 'profile.cancel' | translate }}</button>
+                </div>
+              </form>
+            }
+
+            <div class="address-list">
+              @for (addr of addresses(); track addr.id) {
+                <div class="address-card">
+                  <div class="address-card__info">
+                    <div class="address-card__top">
+                      <strong class="address-card__label">{{ addr.label }}</strong>
+                      @if (addr.is_default) { <span class="address-card__default">{{ 'profile.defaultBadge' | translate }}</span> }
+                    </div>
+                    <p>{{ addr.recipient_name }} · {{ addr.phone }}</p>
+                    <p>{{ addr.address_line1 }}, {{ addr.city }}, {{ addr.province }} {{ addr.postal_code }}</p>
+                  </div>
+                  <div class="address-card__actions">
+                    @if (!addr.is_default) {
+                      <button mat-button (click)="setDefault(addr.id)">{{ 'profile.setDefault' | translate }}</button>
+                    }
+                    <button mat-icon-button class="address-card__del" (click)="deleteAddress(addr.id)" [attr.aria-label]="'profile.deleteAddress' | translate">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              }
+              @if (addresses().length === 0 && !showAddressForm()) {
+                <p class="address-empty">{{ 'profile.noAddresses' | translate }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

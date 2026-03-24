@@ -1,0 +1,105 @@
+<!-- Hero Banner -->
+<app-banner-carousel [banners]="banners()" />
+
+<!-- USP Strip -->
+<section class="usp-strip">
+  <div class="usp-strip__container">
+    <div class="usp-item">
+      <mat-icon>local_shipping</mat-icon>
+      <div>
+        <strong>{{ 'home.freeDelivery' | translate }}</strong>
+        <span>{{ 'home.freeDeliveryDesc' | translate }}</span>
+      </div>
+    </div>
+    <div class="usp-item">
+      <mat-icon>bakery_dining</mat-icon>
+      <div>
+        <strong>{{ 'home.freshGuarantee' | translate }}</strong>
+        <span>{{ 'home.freshGuaranteeDesc' | translate }}</span>
+      </div>
+    </div>
+    <div class="usp-item">
+      <mat-icon>cake</mat-icon>
+      <div>
+        <strong>{{ 'home.handcrafted' | translate }}</strong>
+        <span>{{ 'home.handcraftedDesc' | translate }}</span>
+      </div>
+    </div>
+    <div class="usp-item">
+      <mat-icon>support_agent</mat-icon>
+      <div>
+        <strong>{{ 'home.support' | translate }}</strong>
+        <span>{{ 'home.supportDesc' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="section">
+  <div class="section__container">
+    <div class="section__header">
+      <h2 class="section__title">{{ 'home.collection' | translate }}</h2>
+      <p class="section__subtitle">{{ 'home.collectionSubtitle' | translate }}</p>
+    </div>
+
+    @if (loading()) {
+      <div class="product-grid product-grid--skeleton">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+          <div class="skeleton-card"></div>
+        }
+      </div>
+    } @else {
+      <div class="product-grid">
+        @for (product of featuredProducts(); track product.id) {
+          <app-product-card [product]="product" />
+        }
+      </div>
+    }
+
+    <div class="section__cta">
+      <a routerLink="/products" mat-stroked-button class="section__view-all">{{ 'home.viewAll' | translate }}</a>
+    </div>
+  </div>
+</section>
+
+<!-- Promo Banner -->
+<section class="promo-banner">
+  <div class="promo-banner__content">
+    <span class="promo-banner__tag">{{ 'home.specialOffer' | translate }}</span>
+    <h2 class="promo-banner__title">{{ 'home.celebrate' | translate }}</h2>
+    <p class="promo-banner__desc" [innerHTML]="'home.promoDesc' | translate"></p>
+    <a routerLink="/products" mat-flat-button class="promo-banner__btn">{{ 'home.shopNow' | translate }}</a>
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section section--cream">
+  <div class="section__container">
+    <div class="section__header">
+      <h2 class="section__title">{{ 'home.whyChoose' | translate }}</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card__icon">🍓</div>
+        <h3 class="feature-card__title">{{ 'home.premiumQuality' | translate }}</h3>
+        <p class="feature-card__desc">{{ 'home.premiumQualityDesc' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__icon">🧁</div>
+        <h3 class="feature-card__title">{{ 'home.beautifulPackaging' | translate }}</h3>
+        <p class="feature-card__desc">{{ 'home.beautifulPackagingDesc' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__icon">🚚</div>
+        <h3 class="feature-card__title">{{ 'home.sameDay' | translate }}</h3>
+        <p class="feature-card__desc">{{ 'home.sameDayDesc' | translate }}</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__icon">🎂</div>
+        <h3 class="feature-card__title">{{ 'home.customOrders' | translate }}</h3>
+        <p class="feature-card__desc">{{ 'home.customOrdersDesc' | translate }}</p>
+      </div>
+    </div>
+  </div>
+</section>

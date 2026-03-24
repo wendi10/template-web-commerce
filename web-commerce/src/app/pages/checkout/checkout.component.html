@@ -1,0 +1,143 @@
+<div class="checkout-page">
+  <div class="page-hero">
+    <div class="page-hero__container">
+      <h1 class="page-hero__title">{{ 'checkout.title' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="checkout-page__container">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="checkout-layout">
+      <!-- Left: Form -->
+      <div class="checkout-form">
+        <!-- Delivery Address -->
+        <div class="checkout-section">
+          <h2 class="checkout-section__title">
+            <mat-icon>location_on</mat-icon> {{ 'checkout.deliveryAddress' | translate }}
+          </h2>
+
+          @if (addresses().length === 0) {
+            <div class="checkout-no-address">
+              <p>{{ 'checkout.noAddress' | translate }}</p>
+              <a routerLink="/account/profile" class="checkout-link">{{ 'checkout.addAddress' | translate }}</a>
+            </div>
+          } @else {
+            <mat-radio-group formControlName="address_id" class="address-list">
+              @for (addr of addresses(); track addr.id) {
+                <label class="address-card" [class.address-card--selected]="form.get('address_id')!.value === addr.id">
+                  <mat-radio-button [value]="addr.id"></mat-radio-button>
+                  <div class="address-card__info">
+                    <strong>{{ addr.label }}</strong>
+                    @if (addr.is_default) { <span class="address-card__badge">{{ 'checkout.defaultBadge' | translate }}</span> }
+                    <p>{{ addr.recipient_name }} · {{ addr.phone }}</p>
+                    <p>{{ addr.address_line1 }}, {{ addr.city }}, {{ addr.province }} {{ addr.postal_code }}</p>
+                  </div>
+                </label>
+              }
+            </mat-radio-group>
+          }
+        </div>
+
+        <!-- Payment Method -->
+        <div class="checkout-section">
+          <h2 class="checkout-section__title">
+            <mat-icon>payment</mat-icon> {{ 'checkout.paymentMethod' | translate }}
+          </h2>
+          <mat-radio-group formControlName="payment_method" class="payment-list">
+            <label class="payment-option" [class.payment-option--selected]="form.get('payment_method')!.value === 'virtual_account'">
+              <mat-radio-button value="virtual_account"></mat-radio-button>
+              <div class="payment-option__info">
+                <strong>Virtual Account</strong>
+                <span>{{ 'checkout.vatDesc' | translate }}</span>
+              </div>
+            </label>
+            <label class="payment-option" [class.payment-option--selected]="form.get('payment_method')!.value === 'credit_card'">
+              <mat-radio-button value="credit_card"></mat-radio-button>
+              <div class="payment-option__info">
+                <strong>{{ 'checkout.creditCard' | translate }}</strong>
+                <span>{{ 'checkout.creditCardDesc' | translate }}</span>
+              </div>
+            </label>
+            <label class="payment-option" [class.payment-option--selected]="form.get('payment_method')!.value === 'qris'">
+              <mat-radio-button value="qris"></mat-radio-button>
+              <div class="payment-option__info">
+                <strong>QRIS</strong>
+                <span>{{ 'checkout.qrisDesc' | translate }}</span>
+              </div>
+            </label>
+          </mat-radio-group>
+        </div>
+
+        <!-- Notes -->
+        <div class="checkout-section">
+          <h2 class="checkout-section__title">
+            <mat-icon>notes</mat-icon> {{ 'checkout.orderNotesOptional' | translate }}
+          </h2>
+          <mat-form-field appearance="outline" class="checkout-full-field">
+            <mat-label>{{ 'checkout.orderNotesPlaceholder' | translate }}</mat-label>
+            <textarea matInput formControlName="notes" rows="3"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Right: Summary -->
+      <div class="checkout-summary">
+        <h2 class="checkout-summary__title">{{ 'checkout.orderSummary' | translate }}</h2>
+
+        @if (cart()) {
+          <ul class="checkout-items">
+            @for (item of cart()!.items; track item.id) {
+              <li class="checkout-item">
+                <div class="checkout-item__img">
+                  <img [src]="item.product?.images?.[0]?.url || 'assets/placeholder.jpg'" [alt]="item.product?.name" />
+                  <span class="checkout-item__qty">{{ item.quantity }}</span>
+                </div>
+                <div class="checkout-item__info">
+                  <p class="checkout-item__name">{{ item.product?.name }}</p>
+                  <p class="checkout-item__price">{{ fmt(item.product?.price ?? 0) }}</p>
+                </div>
+                <span class="checkout-item__total">{{ fmt(item.sub_total ?? 0) }}</span>
+              </li>
+            }
+          </ul>
+
+          <!-- Promo Code -->
+          <div class="promo-section">
+            <mat-form-field appearance="outline" class="promo-section__field">
+              <mat-label>{{ 'checkout.promoCode' | translate }}</mat-label>
+              <input matInput formControlName="promo_code" placeholder="TAN10" />
+            </mat-form-field>
+            <button type="button" mat-stroked-button class="promo-section__btn"
+              (click)="applyPromo()" [disabled]="promoLoading()">
+              @if (promoLoading()) { <mat-spinner diameter="16"></mat-spinner> } @else { {{ 'checkout.apply' | translate }} }
+            </button>
+          </div>
+
+          <div class="checkout-totals">
+            <div class="checkout-totals__row">
+              <span>{{ 'checkout.subtotal' | translate }}</span><span>{{ fmt(cart()!.sub_total) }}</span>
+            </div>
+            @if (promoDiscount() > 0) {
+              <div class="checkout-totals__row checkout-totals__row--discount">
+                <span>{{ 'checkout.promoDiscount' | translate }}</span><span>-{{ fmt(promoDiscount()) }}</span>
+              </div>
+            }
+            <div class="checkout-totals__row">
+              <span>{{ 'checkout.shipping' | translate }}</span><span class="checkout-totals__tbd">{{ 'checkout.tbd' | translate }}</span>
+            </div>
+            <div class="checkout-totals__total">
+              <span>{{ 'checkout.total' | translate }}</span><strong>{{ fmt(total) }}</strong>
+            </div>
+          </div>
+        }
+
+        <button mat-flat-button type="submit" class="checkout-submit-btn" [disabled]="loading()">
+          @if (loading()) {
+            <mat-spinner diameter="20"></mat-spinner> {{ 'checkout.processing' | translate }}
+          } @else {
+            {{ 'checkout.placeOrder' | translate }}
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

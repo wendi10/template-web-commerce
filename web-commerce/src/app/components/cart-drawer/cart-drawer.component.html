@@ -1,0 +1,86 @@
+<!-- Backdrop -->
+<div class="cart-backdrop" [class.cart-backdrop--open]="cartService.isOpen()" (click)="cartService.closeCart()"></div>
+
+<!-- Drawer -->
+<aside class="cart-drawer" [class.cart-drawer--open]="cartService.isOpen()">
+  <div class="cart-drawer__header">
+    <h2 class="cart-drawer__title">{{ 'cartDrawer.title' | translate }}
+      @if (cartService.cartCount() > 0) {
+        <span class="cart-drawer__count">({{ cartService.cartCount() }})</span>
+      }
+    </h2>
+    <button mat-icon-button (click)="cartService.closeCart()" [attr.aria-label]="'cartDrawer.closeCart' | translate">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="cart-drawer__body">
+    @if (loading()) {
+      <div class="cart-drawer__loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    } @else if (!cart() || cart()!.items.length === 0) {
+      <div class="cart-drawer__empty">
+        <mat-icon class="cart-drawer__empty-icon">shopping_bag</mat-icon>
+        <p>{{ 'cartDrawer.empty' | translate }}</p>
+        <a routerLink="/products" mat-stroked-button class="cart-drawer__shop-btn" (click)="cartService.closeCart()">
+          {{ 'cartDrawer.startShopping' | translate }}
+        </a>
+      </div>
+    } @else {
+      <ul class="cart-drawer__items">
+        @for (item of cart()!.items; track item.id) {
+          <li class="cart-item">
+            <div class="cart-item__image">
+              <img
+                [src]="item.product?.images?.[0]?.url || 'assets/placeholder.jpg'"
+                [alt]="item.product?.name"
+                loading="lazy" />
+            </div>
+            <div class="cart-item__info">
+              <p class="cart-item__name">{{ item.product?.name }}</p>
+              <p class="cart-item__price">{{ formatPrice(item.product?.price ?? 0) }}</p>
+              <div class="cart-item__qty">
+                <button mat-icon-button (click)="updateQty(item, -1)" [attr.aria-label]="'cartDrawer.decrease' | translate">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span class="cart-item__qty-num">{{ item.quantity }}</span>
+                <button mat-icon-button (click)="updateQty(item, 1)" [attr.aria-label]="'cartDrawer.increase' | translate">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </div>
+            <button mat-icon-button class="cart-item__remove" (click)="removeItem(item)" [attr.aria-label]="'cartDrawer.remove' | translate">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  @if (cart() && cart()!.items.length > 0) {
+    <div class="cart-drawer__footer">
+      <div class="cart-drawer__summary">
+        <span>{{ 'cartDrawer.subtotal' | translate }}</span>
+        <strong>{{ formatPrice(cart()!.sub_total) }}</strong>
+      </div>
+      @if (+cart()!.discount_amount > 0) {
+        <div class="cart-drawer__summary cart-drawer__summary--discount">
+          <span>{{ 'cartDrawer.discount' | translate }}</span>
+          <strong>-{{ formatPrice(cart()!.discount_amount) }}</strong>
+        </div>
+      }
+      <div class="cart-drawer__summary cart-drawer__summary--total">
+        <span>{{ 'cartDrawer.total' | translate }}</span>
+        <strong>{{ formatPrice(cart()!.total) }}</strong>
+      </div>
+      <button mat-flat-button class="cart-drawer__checkout-btn" (click)="checkout()">
+        {{ 'cartDrawer.proceedToCheckout' | translate }}
+      </button>
+      <a routerLink="/cart" mat-stroked-button class="cart-drawer__view-btn" (click)="cartService.closeCart()">
+        {{ 'cartDrawer.viewCart' | translate }}
+      </a>
+    </div>
+  }
+</aside>

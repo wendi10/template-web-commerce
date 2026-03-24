@@ -1,0 +1,166 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.page-hero {
+  background: $cream;
+  border-bottom: 1px solid $border;
+  padding: 48px 0;
+  text-align: center;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  &__title {
+    font-family: 'Georgia', serif;
+    font-size: 36px;
+    color: $choco;
+    margin: 0 0 8px;
+  }
+
+  &__subtitle {
+    font-size: 15px;
+    color: $choco-light;
+    margin: 0;
+  }
+}
+
+.product-list-page {
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+
+  &__left, &__right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__search {
+    width: 260px;
+  }
+
+  &__select {
+    width: 180px;
+  }
+
+  &__count {
+    font-size: 13px;
+    color: $choco-light;
+    white-space: nowrap;
+  }
+}
+
+// Override mat-form-field colors
+::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-floating-label, .mat-mdc-select-value, .mdc-floating-label {
+      color: $choco-light !important;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border !important;
+    }
+
+    &:hover {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $choco-light !important;
+      }
+    }
+
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $choco !important;
+      }
+    }
+
+    input, mat-select {
+      color: $choco !important;
+    }
+
+    mat-icon { color: $choco-light !important; }
+  }
+
+  .mat-mdc-paginator {
+    background: transparent !important;
+    color: $choco-light !important;
+
+    .mat-mdc-icon-button { color: $choco !important; }
+  }
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+
+  &--skeleton .skeleton-card {
+    aspect-ratio: 3/4;
+    background: linear-gradient(90deg, #f0e6d9 25%, #e8d5c4 50%, #f0e6d9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 12px;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 24px;
+
+  &__icon {
+    font-size: 64px;
+    height: 64px;
+    width: 64px;
+    color: $border;
+    margin-bottom: 16px;
+  }
+
+  h3 { font-size: 20px; color: $choco; margin: 0 0 8px; }
+  p { font-size: 14px; color: $choco-light; margin: 0 0 24px; }
+
+  &__btn {
+    background: $choco !important;
+    color: #fff !important;
+  }
+}
+
+.paginator {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .filters-bar { flex-direction: column; align-items: stretch; &__search, &__select { width: 100%; } }
+}
+@media (max-width: 480px) { .product-grid { grid-template-columns: 1fr; } }

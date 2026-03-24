@@ -1,0 +1,20 @@
+<div class="success-page">
+  <div class="success-page__card">
+    <div class="success-page__icon">🍰</div>
+    <h1 class="success-page__title">{{ 'orderSuccess.confirmed' | translate }}</h1>
+    @if (orderNumber) {
+      <p class="success-page__order">Order #{{ orderNumber }}</p>
+    }
+    <p class="success-page__msg">
+      {{ 'orderSuccess.thankYou' | translate }}
+    </p>
+    <div class="success-page__actions">
+      <a routerLink="/account/orders" mat-flat-button class="success-page__btn--primary">
+        <mat-icon>receipt_long</mat-icon> {{ 'orderSuccess.viewOrders' | translate }}
+      </a>
+      <a routerLink="/products" mat-stroked-button class="success-page__btn--secondary">
+        {{ 'orderSuccess.continueShopping' | translate }}
+      </a>
+    </div>
+  </div>
+</div>

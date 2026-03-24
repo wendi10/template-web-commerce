@@ -1,0 +1,196 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.detail-loading, .detail-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 16px;
+  h3 { color: $choco; }
+  a { background: $choco !important; color: #fff !important; text-decoration: none; }
+}
+
+.page-hero {
+  background: $cream;
+  border-bottom: 1px solid $border;
+  padding: 32px 0;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__back {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: $choco-light;
+    text-decoration: none;
+    margin-right: auto;
+
+    mat-icon { font-size: 18px; height: 18px; width: 18px; }
+    &:hover { color: $choco; }
+  }
+
+  &__title {
+    font-family: 'Georgia', serif;
+    font-size: 22px;
+    color: $choco;
+    margin: 0;
+    order: -1;
+    width: 100%;
+  }
+
+  &__status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: capitalize;
+  }
+}
+
+.order-detail-page {
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+}
+
+.order-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 48px;
+  align-items: start;
+}
+
+.detail-section {
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+
+  &__title {
+    font-family: 'Georgia', serif;
+    font-size: 18px;
+    color: $choco;
+    margin: 0 0 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $border;
+  }
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid $border;
+
+  &:last-child { border-bottom: none; }
+
+  &__name { font-size: 14px; font-weight: 500; color: $choco; margin: 0 0 4px; }
+  &__price { font-size: 12px; color: $choco-light; margin: 0; }
+  &__total { font-size: 14px; font-weight: 700; color: $choco; white-space: nowrap; }
+}
+
+.address-info {
+  strong { display: block; font-size: 14px; color: $choco; margin-bottom: 4px; }
+  p { font-size: 13px; color: $choco-light; margin: 0 0 4px; }
+}
+
+.payment-info {
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: $choco-light;
+    margin-bottom: 8px;
+    span:last-child { color: $choco; font-weight: 500; }
+  }
+
+  &__pay-btn {
+    background: $choco !important;
+    color: #fff !important;
+    text-decoration: none;
+    margin-top: 16px;
+    width: 100%;
+  }
+}
+
+.order-summary {
+  background: $cream;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 24px;
+  position: sticky;
+  top: 88px;
+
+  &__title {
+    font-family: 'Georgia', serif;
+    font-size: 18px;
+    color: $choco;
+    margin: 0 0 20px;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: $choco-light;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $border;
+    span:last-child { font-weight: 500; }
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: $choco-light;
+    margin-bottom: 8px;
+
+    &--discount span:last-child { color: #27ae60; font-weight: 600; }
+  }
+
+  &__total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    color: $choco;
+    font-weight: 700;
+    border-top: 1px solid $border;
+    padding-top: 16px;
+    margin: 16px 0 24px;
+  }
+
+  &__cancel-btn {
+    width: 100%;
+    color: #ef4444 !important;
+    border-color: #ef4444 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-detail-layout { grid-template-columns: 1fr; }
+  .order-summary { position: static; }
+}

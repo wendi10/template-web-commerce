@@ -1,0 +1,107 @@
+@if (loading()) {
+  <div class="detail-loading"><mat-spinner diameter="48"></mat-spinner></div>
+} @else if (!order()) {
+  <div class="detail-error">
+    <h3>{{ 'orderDetail.notFound' | translate }}</h3>
+    <a routerLink="/account/orders" mat-flat-button>{{ 'orderDetail.backBtn' | translate }}</a>
+  </div>
+} @else {
+  <div class="order-detail-page">
+    <div class="page-hero">
+      <div class="page-hero__container">
+        <a routerLink="/account/orders" class="page-hero__back">
+          <mat-icon>arrow_back</mat-icon> {{ 'orderDetail.backToOrders' | translate }}
+        </a>
+        <h1 class="page-hero__title">Order {{ order()!.order_number }}</h1>
+        <span class="page-hero__status"
+          [style.background]="statusColor(order()!.status) + '20'"
+          [style.color]="statusColor(order()!.status)">
+          {{ order()!.status | titlecase }}
+        </span>
+      </div>
+    </div>
+
+    <div class="order-detail-page__container">
+      <div class="order-detail-layout">
+        <!-- Left -->
+        <div>
+          <!-- Items -->
+          <div class="detail-section">
+            <h2 class="detail-section__title">{{ 'orderDetail.orderItems' | translate }}</h2>
+            @for (item of order()!.items; track item.id) {
+              <div class="order-item">
+                <div class="order-item__info">
+                  <p class="order-item__name">{{ item.product_name }}</p>
+                  <p class="order-item__price">{{ fmt(item.product_price) }} × {{ item.quantity }}</p>
+                </div>
+                <span class="order-item__total">{{ fmt(item.total_price) }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Delivery Address -->
+          @if (order()!.address) {
+            <div class="detail-section">
+              <h2 class="detail-section__title">{{ 'orderDetail.deliveryAddress' | translate }}</h2>
+              <div class="address-info">
+                <strong>{{ order()!.address!.recipient_name }}</strong>
+                <p>{{ order()!.address!.phone }}</p>
+                <p>{{ order()!.address!.address_line1 }}, {{ order()!.address!.city }}, {{ order()!.address!.province }} {{ order()!.address!.postal_code }}</p>
+              </div>
+            </div>
+          }
+
+          <!-- Payment -->
+          @if (order()!.payment) {
+            <div class="detail-section">
+              <h2 class="detail-section__title">{{ 'orderDetail.payment' | translate }}</h2>
+              <div class="payment-info">
+                <div class="payment-info__row">
+                  <span>{{ 'orderDetail.method' | translate }}</span><span>{{ order()!.payment!.payment_method | titlecase }}</span>
+                </div>
+                <div class="payment-info__row">
+                  <span>{{ 'orderDetail.status' | translate }}</span>
+                  <span>{{ order()!.payment!.status | titlecase }}</span>
+                </div>
+                @if (order()!.payment!.payment_url && order()!.payment!.status === 'pending') {
+                  <a [href]="order()!.payment!.payment_url" mat-flat-button class="payment-info__pay-btn" target="_blank">
+                    {{ 'orderDetail.payNow' | translate }}
+                  </a>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Right Summary -->
+        <div class="order-summary">
+          <h2 class="order-summary__title">{{ 'orderDetail.orderSummary' | translate }}</h2>
+          <div class="order-summary__meta">
+            <span>{{ 'orderDetail.ordered' | translate }}</span><span>{{ fmtDate(order()!.created_at) }}</span>
+          </div>
+          <div class="order-summary__row">
+            <span>{{ 'orderDetail.subtotal' | translate }}</span><span>{{ fmt(order()!.sub_total) }}</span>
+          </div>
+          @if (+order()!.discount_amount > 0) {
+            <div class="order-summary__row order-summary__row--discount">
+              <span>{{ 'orderDetail.discount' | translate }}</span><span>-{{ fmt(order()!.discount_amount) }}</span>
+            </div>
+          }
+          <div class="order-summary__row">
+            <span>{{ 'orderDetail.shipping' | translate }}</span><span>{{ fmt(order()!.shipping_cost) }}</span>
+          </div>
+          <div class="order-summary__total">
+            <span>{{ 'orderDetail.total' | translate }}</span><strong>{{ fmt(order()!.total_amount) }}</strong>
+          </div>
+
+          @if (canCancel()) {
+            <button mat-stroked-button class="order-summary__cancel-btn"
+              (click)="cancelOrder()" [disabled]="cancelling()">
+              @if (cancelling()) { <mat-spinner diameter="16"></mat-spinner> } @else { {{ 'orderDetail.cancelOrder' | translate }} }
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

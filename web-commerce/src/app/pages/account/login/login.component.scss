@@ -1,0 +1,122 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #fff6ef 0%, #fff 55%);
+  padding: 40px 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid $border;
+  padding: 48px 40px;
+  box-shadow: 0 16px 48px rgba(61,28,2,0.08);
+  text-align: center;
+
+  &__logo {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    justify-content: center;
+    margin-bottom: 28px;
+
+    &-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: $choco;
+    }
+
+    &-sub {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: $gold;
+      text-transform: uppercase;
+    }
+  }
+
+  &__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: $choco;
+    margin: 0 0 8px;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: $choco-light;
+    margin: 0 0 32px;
+  }
+
+  &__footer {
+    font-size: 14px;
+    color: $choco-light;
+    margin: 20px 0 0;
+  }
+
+  &__link {
+    color: $choco;
+    font-weight: 600;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__field {
+    width: 100%;
+  }
+
+  &__submit {
+    width: 100%;
+    background: $choco !important;
+    color: #fff !important;
+    height: 52px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+::ng-deep {
+  .mat-mdc-form-field {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border !important;
+    }
+    &:hover .mdc-notched-outline__leading,
+    &:hover .mdc-notched-outline__notch,
+    &:hover .mdc-notched-outline__trailing {
+      border-color: $choco-light !important;
+    }
+    &.mat-focused .mdc-notched-outline__leading,
+    &.mat-focused .mdc-notched-outline__notch,
+    &.mat-focused .mdc-notched-outline__trailing {
+      border-color: $choco !important;
+    }
+    input { color: $choco !important; }
+    .mdc-floating-label, mat-label { color: $choco-light !important; }
+    mat-icon { color: $choco-light !important; }
+  }
+}

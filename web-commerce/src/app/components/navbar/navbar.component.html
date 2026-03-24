@@ -1,0 +1,73 @@
+<header class="navbar">
+  <div class="navbar__container">
+    <!-- Logo -->
+    <a routerLink="/" class="navbar__logo">
+      <span class="navbar__logo-main">TAN</span>
+      <span class="navbar__logo-sub">patisserie</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="navbar__nav" [class.navbar__nav--open]="menuOpen()">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="navbar__link">{{ 'nav.home' | translate }}</a>
+      <a routerLink="/products" routerLinkActive="active" class="navbar__link">{{ 'nav.shop' | translate }}</a>
+
+      @if (categories().length > 0) {
+        <div class="navbar__dropdown">
+          <span class="navbar__link navbar__link--dropdown">{{ 'nav.collections' | translate }} <mat-icon>expand_more</mat-icon></span>
+          <div class="navbar__dropdown-menu">
+            @for (cat of categories(); track cat.id) {
+              <a [routerLink]="['/products']" [queryParams]="{category: cat.id}" class="navbar__dropdown-item">{{ cat.name }}</a>
+            }
+          </div>
+        </div>
+      }
+    </nav>
+
+    <!-- Actions -->
+    <div class="navbar__actions">
+      <!-- Search -->
+      <a routerLink="/products" mat-icon-button class="navbar__icon-btn" [attr.aria-label]="'products.search' | translate">
+        <mat-icon>search</mat-icon>
+      </a>
+
+      <!-- Cart -->
+      <button mat-icon-button class="navbar__icon-btn navbar__cart-btn" (click)="cart.toggleCart()" [attr.aria-label]="'cart.title' | translate">
+        <mat-icon [matBadge]="cart.cartCount() > 0 ? cart.cartCount().toString() : null"
+                  matBadgeColor="warn"
+                  matBadgeSize="small">shopping_bag</mat-icon>
+      </button>
+
+      <!-- Account -->
+      @if (auth.isLoggedIn()) {
+        <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="navbar__icon-btn" [attr.aria-label]="'nav.myProfile' | translate">
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #accountMenu="matMenu">
+          <a mat-menu-item routerLink="/account/profile">
+            <mat-icon>manage_accounts</mat-icon> {{ 'nav.myProfile' | translate }}
+          </a>
+          <a mat-menu-item routerLink="/account/orders">
+            <mat-icon>receipt_long</mat-icon> {{ 'nav.myOrders' | translate }}
+          </a>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon> {{ 'nav.logout' | translate }}
+          </button>
+        </mat-menu>
+      } @else {
+        <a routerLink="/account/login" mat-icon-button class="navbar__icon-btn" [attr.aria-label]="'nav.login' | translate">
+          <mat-icon>person_outline</mat-icon>
+        </a>
+      }
+
+      <!-- Language switcher -->
+      <button class="navbar__lang-btn" (click)="i18n.toggle()" [attr.aria-label]="i18n.lang() === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'">
+        {{ i18n.lang() === 'id' ? 'EN' : 'ID' }}
+      </button>
+
+      <!-- Mobile hamburger -->
+      <button mat-icon-button class="navbar__hamburger" (click)="toggleMenu()" aria-label="Menu">
+        <mat-icon>{{ menuOpen() ? 'close' : 'menu' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+</header>

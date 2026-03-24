@@ -1,0 +1,84 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card__logo">
+      <span class="auth-card__logo-main">TAN</span>
+      <span class="auth-card__logo-sub">patisserie</span>
+    </div>
+    <h1 class="auth-card__title">{{ 'register.title' | translate }}</h1>
+    <p class="auth-card__subtitle">{{ 'register.subtitle' | translate }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+
+      <!-- First Name + Last Name side by side -->
+      <div class="auth-form__row">
+        <mat-form-field appearance="outline" class="auth-form__field">
+          <mat-label>{{ 'register.firstName' | translate }}</mat-label>
+          <input matInput formControlName="first_name" autocomplete="given-name" />
+          <mat-icon matPrefix>person</mat-icon>
+          @if (form.get('first_name')?.hasError('required') && form.get('first_name')?.touched) {
+            <mat-error>{{ 'register.required' | translate }}</mat-error>
+          }
+          @if (form.get('first_name')?.hasError('minlength') && form.get('first_name')?.touched) {
+            <mat-error>{{ 'register.minLength2' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="auth-form__field">
+          <mat-label>{{ 'register.lastName' | translate }}</mat-label>
+          <input matInput formControlName="last_name" autocomplete="family-name" />
+          @if (form.get('last_name')?.hasError('required') && form.get('last_name')?.touched) {
+            <mat-error>{{ 'register.required' | translate }}</mat-error>
+          }
+          @if (form.get('last_name')?.hasError('minlength') && form.get('last_name')?.touched) {
+            <mat-error>{{ 'register.minLength2' | translate }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="auth-form__field">
+        <mat-label>{{ 'register.email' | translate }}</mat-label>
+        <input matInput formControlName="email" type="email" autocomplete="email" />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+          <mat-error>{{ 'register.required' | translate }}</mat-error>
+        }
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>{{ 'register.invalidEmail' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="auth-form__field">
+        <mat-label>{{ 'register.phone' | translate }}</mat-label>
+        <input matInput formControlName="phone" type="tel" autocomplete="tel" />
+        <mat-icon matPrefix>phone</mat-icon>
+        @if (form.get('phone')?.hasError('required') && form.get('phone')?.touched) {
+          <mat-error>{{ 'register.required' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="auth-form__field">
+        <mat-label>{{ 'register.password' | translate }}</mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="new-password" />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+          <mat-error>{{ 'register.required' | translate }}</mat-error>
+        }
+        @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
+          <mat-error>{{ 'register.minLength8' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-flat-button type="submit" class="auth-form__submit" [disabled]="loading">
+        @if (loading) { <mat-spinner diameter="20"></mat-spinner> } @else { {{ 'register.createAccount' | translate }} }
+      </button>
+    </form>
+
+    <p class="auth-card__footer">
+      {{ 'register.alreadyHave' | translate }}
+      <a routerLink="/account/login" class="auth-card__link">{{ 'register.signIn' | translate }}</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="product-list-page">
+  <!-- Page Header -->
+  <div class="page-hero">
+    <div class="page-hero__container">
+      <h1 class="page-hero__title">{{ 'products.collection' | translate }}</h1>
+      <p class="page-hero__subtitle">{{ 'products.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="product-list-page__container">
+    <!-- Filters Bar -->
+    <div class="filters-bar">
+      <div class="filters-bar__left">
+        <!-- Search -->
+        <mat-form-field appearance="outline" class="filters-bar__search">
+          <mat-label>{{ 'products.search' | translate }}</mat-label>
+          <input matInput [(ngModel)]="search" (ngModelChange)="onSearch($event)" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Category -->
+        <mat-form-field appearance="outline" class="filters-bar__select">
+          <mat-label>{{ 'products.category' | translate }}</mat-label>
+          <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)">
+            <mat-option value="">{{ 'products.allCategories' | translate }}</mat-option>
+            @for (cat of categories(); track cat.id) {
+              <mat-option [value]="cat.id">{{ cat.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="filters-bar__right">
+        <!-- Sort -->
+        <mat-form-field appearance="outline" class="filters-bar__select">
+          <mat-label>{{ 'products.sortBy' | translate }}</mat-label>
+          <mat-select (ngModelChange)="onSortChange($event)" [ngModel]="'created_at:desc'">
+            <mat-option value="created_at:desc">{{ 'products.newest' | translate }}</mat-option>
+            <mat-option value="price:asc">{{ 'products.priceLow' | translate }}</mat-option>
+            <mat-option value="price:desc">{{ 'products.priceHigh' | translate }}</mat-option>
+            <mat-option value="name:asc">{{ 'products.nameAZ' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <span class="filters-bar__count">{{ total() }} {{ 'products.products' | translate }}</span>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    @if (loading()) {
+      <div class="product-grid product-grid--skeleton">
+        @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+          <div class="skeleton-card"></div>
+        }
+      </div>
+    } @else if (products().length === 0) {
+      <div class="empty-state">
+        <mat-icon class="empty-state__icon">sentiment_dissatisfied</mat-icon>
+        <h3>{{ 'products.notFound' | translate }}</h3>
+        <p>{{ 'products.notFoundDesc' | translate }}</p>
+        <button mat-flat-button class="empty-state__btn" (click)="selectedCategory=''; filter.search=undefined; filter.page=1; load()">
+          {{ 'products.clearFilters' | translate }}
+        </button>
+      </div>
+    } @else {
+      <div class="product-grid">
+        @for (product of products(); track product.id) {
+          <app-product-card [product]="product" />
+        }
+      </div>
+    }
+
+    <!-- Pagination -->
+    @if (total() > (filter.limit ?? 12)) {
+      <mat-paginator
+        [length]="total()"
+        [pageSize]="filter.limit ?? 12"
+        [pageSizeOptions]="[12, 24, 48]"
+        [pageIndex]="(filter.page ?? 1) - 1"
+        (page)="onPageChange($event)"
+        showFirstLastButtons
+        class="paginator">
+      </mat-paginator>
+    }
+  </div>
+</div>

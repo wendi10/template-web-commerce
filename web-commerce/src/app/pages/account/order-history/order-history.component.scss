@@ -1,0 +1,132 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.page-hero {
+  background: $cream;
+  border-bottom: 1px solid $border;
+  padding: 40px 0;
+  text-align: center;
+  &__container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+  &__title { font-family: 'Georgia', serif; font-size: 32px; color: $choco; margin: 0; }
+}
+
+.account-page {
+  &__container {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+}
+
+.account-loading {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.account-empty {
+  text-align: center;
+  padding: 80px 24px;
+  mat-icon { font-size: 64px; height: 64px; width: 64px; color: $border; margin-bottom: 16px; }
+  h3 { font-size: 22px; color: $choco; margin: 0 0 8px; }
+  p { font-size: 14px; color: $choco-light; margin: 0 0 24px; }
+  &__btn { background: $choco !important; color: #fff !important; text-decoration: none; }
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-card {
+  border: 1px solid $border;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid $border;
+    background: $cream;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__number {
+    font-size: 14px;
+    font-weight: 700;
+    color: $choco;
+    display: block;
+  }
+
+  &__date {
+    font-size: 12px;
+    color: $choco-light;
+    display: block;
+    margin-top: 2px;
+  }
+
+  &__status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+  }
+
+  &__items {
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-bottom: 1px solid $border;
+  }
+
+  &__item-name {
+    font-size: 13px;
+    color: $choco-light;
+    background: $cream;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid $border;
+  }
+
+  &__more {
+    font-size: 12px;
+    color: $gold;
+    padding: 4px 10px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+  }
+
+  &__total {
+    font-size: 18px;
+    font-weight: 700;
+    color: $choco;
+  }
+
+  &__detail-btn {
+    color: $choco !important;
+    border-color: $border !important;
+    font-size: 13px;
+    text-decoration: none;
+  }
+}
+
+.paginator {
+  margin-top: 32px;
+  ::ng-deep .mat-mdc-paginator-container { justify-content: center; }
+}

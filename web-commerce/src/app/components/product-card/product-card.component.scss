@@ -1,0 +1,126 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.product-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid $border;
+  transition: transform 0.25s, box-shadow 0.25s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(61, 28, 2, 0.1);
+
+    .product-card__overlay {
+      opacity: 1;
+    }
+
+    .product-card__image {
+      transform: scale(1.04);
+    }
+  }
+
+  &__image-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: $cream;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+
+  &__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    &--out {
+      background: rgba(255,255,255,0.9);
+      color: #c0392b;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, rgba(61, 28, 2, 0.4));
+    opacity: 0;
+    transition: opacity 0.25s;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__add-btn {
+    background: #fff !important;
+    color: $choco !important;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 24px;
+    padding: 0 20px;
+    gap: 6px;
+
+    mat-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &__info {
+    padding: 16px;
+  }
+
+  &__category {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: $gold;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  &__name {
+    font-size: 15px;
+    font-weight: 600;
+    color: $choco;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__price {
+    font-size: 15px;
+    font-weight: 700;
+    color: $choco-light;
+    margin: 0;
+  }
+}

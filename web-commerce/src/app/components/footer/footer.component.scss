@@ -1,0 +1,139 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.footer {
+  background: linear-gradient(180deg, $cream 0%, #fff 100%);
+  border-top: 1px solid $border;
+  margin-top: 80px;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 64px 24px 32px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  &__brand {}
+
+  &__logo {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    margin-bottom: 12px;
+
+    &-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: $choco;
+    }
+
+    &-sub {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: $gold;
+      text-transform: uppercase;
+    }
+  }
+
+  &__tagline {
+    font-size: 13px;
+    color: $choco-light;
+    line-height: 1.7;
+    max-width: 260px;
+    margin-bottom: 20px;
+  }
+
+  &__social {
+    display: flex;
+    gap: 12px;
+
+    &-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid $border;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $choco;
+      text-decoration: none;
+      transition: all 0.2s;
+
+      mat-icon { font-size: 18px; height: 18px; width: 18px; }
+
+      &:hover {
+        background: $choco;
+        color: #fff;
+        border-color: $choco;
+      }
+    }
+  }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: $choco;
+      margin-bottom: 4px;
+    }
+
+    &-link {
+      font-size: 13px;
+      color: $choco-light;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover { color: $choco; }
+    }
+  }
+
+  &__bottom {
+    border-top: 1px solid $border;
+    padding-top: 24px;
+    text-align: center;
+
+    p {
+      font-size: 12px;
+      color: $choco-light;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    &__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    &__brand {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+<div class="account-page">
+  <div class="page-hero">
+    <div class="page-hero__container">
+      <h1 class="page-hero__title">{{ 'orderHistory.title' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="account-page__container">
+    @if (loading()) {
+      <div class="account-loading"><mat-spinner diameter="48"></mat-spinner></div>
+    } @else if (orders().length === 0) {
+      <div class="account-empty">
+        <mat-icon>receipt_long</mat-icon>
+        <h3>{{ 'orderHistory.noOrders' | translate }}</h3>
+        <p>{{ 'orderHistory.noOrdersDesc' | translate }}</p>
+        <a routerLink="/products" mat-flat-button class="account-empty__btn">{{ 'orderHistory.startShopping' | translate }}</a>
+      </div>
+    } @else {
+      <div class="order-list">
+        @for (order of orders(); track order.id) {
+          <div class="order-card">
+            <div class="order-card__header">
+              <div>
+                <span class="order-card__number">{{ order.order_number }}</span>
+                <span class="order-card__date">{{ fmtDate(order.created_at) }}</span>
+              </div>
+              <span class="order-card__status" [style.background]="statusColor(order.status) + '20'" [style.color]="statusColor(order.status)">
+                {{ order.status | titlecase }}
+              </span>
+            </div>
+
+            @if (order.items && order.items.length > 0) {
+              <div class="order-card__items">
+                @for (item of order.items.slice(0, 3); track item.id) {
+                  <span class="order-card__item-name">{{ item.product_name }}</span>
+                }
+                @if (order.items.length > 3) {
+                  <span class="order-card__more">+{{ order.items.length - 3 }} {{ 'orderHistory.more' | translate }}</span>
+                }
+              </div>
+            }
+
+            <div class="order-card__footer">
+              <span class="order-card__total">{{ fmt(order.total_amount) }}</span>
+              <a [routerLink]="['/account/orders', order.id]" mat-stroked-button class="order-card__detail-btn">
+                {{ 'orderHistory.viewDetails' | translate }}
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (total() > limit) {
+        <mat-paginator
+          [length]="total()"
+          [pageSize]="limit"
+          [pageSizeOptions]="[10, 20]"
+          [pageIndex]="page - 1"
+          (page)="onPage($event)"
+          showFirstLastButtons
+          class="paginator">
+        </mat-paginator>
+      }
+    }
+  </div>
+</div>

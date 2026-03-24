@@ -1,0 +1,140 @@
+@use '@angular/material' as mat;
+
+// ─── Custom Theme (Dark Chocolate) ──────────────────────────────────────────
+$choco-palette: (
+  50: #f5ece6,
+  100: #e8d0c0,
+  200: #d9b196,
+  300: #c9916c,
+  400: #bd7a4f,
+  500: #b16333,
+  600: #a35a2e,
+  700: #914e27,
+  800: #7f4321,
+  900: #5c2d0e,
+  contrast: (
+    50: #3D1C02,
+    100: #3D1C02,
+    200: #3D1C02,
+    300: #3D1C02,
+    400: #fff,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+  )
+);
+
+$primary: mat.m2-define-palette($choco-palette, 900, 700, 500);
+$accent: mat.m2-define-palette($choco-palette, 400, 300, 200);
+$warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: '"Inter", sans-serif',
+  ),
+));
+
+@include mat.all-component-themes($theme);
+
+// ─── Reset & Base ───────────────────────────────────────────────────────────
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #3D1C02;
+  background: linear-gradient(180deg, #fffdfb 0%, #ffffff 60%);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+// ─── Material Overrides ─────────────────────────────────────────────────────
+.mat-mdc-button, .mat-mdc-raised-button,
+.mat-mdc-outlined-button, .mat-mdc-flat-button {
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  border-radius: 4px !important;
+}
+
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: #3D1C02;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #C9A96E;
+}
+
+.mat-mdc-progress-bar {
+  --mdc-linear-progress-active-indicator-color: #C9A96E;
+  --mdc-linear-progress-track-color: rgba(201, 169, 110, 0.2);
+  height: 3px !important;
+}
+
+// Radio button chocolate color
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-selected-focus-icon-color: #3D1C02;
+  --mdc-radio-selected-hover-icon-color: #3D1C02;
+  --mdc-radio-selected-icon-color: #3D1C02;
+  --mdc-radio-selected-pressed-icon-color: #3D1C02;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FDF8F4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E8D5C4;
+  border-radius: 3px;
+
+  &:hover {
+    background: #C9A96E;
+  }
+}
+
+// ─── Utilities ──────────────────────────────────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

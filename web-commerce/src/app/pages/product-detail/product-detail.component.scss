@@ -1,0 +1,240 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.detail-loading, .detail-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 16px;
+  color: $choco-light;
+
+  mat-icon { font-size: 64px; height: 64px; width: 64px; color: $border; }
+  h3 { font-size: 20px; color: $choco; margin: 0; }
+  a { background: $choco !important; color: #fff !important; text-decoration: none; }
+}
+
+.breadcrumb {
+  background: $cream;
+  border-bottom: 1px solid $border;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  &__link {
+    font-size: 13px;
+    color: $choco-light;
+    text-decoration: none;
+    &:hover { color: $choco; }
+  }
+
+  &__sep {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+    color: $border;
+  }
+
+  &__current {
+    font-size: 13px;
+    color: $choco;
+    font-weight: 500;
+  }
+}
+
+.detail-page {
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.detail-gallery {
+  position: sticky;
+  top: 88px;
+
+  &__main {
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: $cream;
+    margin-bottom: 12px;
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__thumbs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__thumb {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    background: $cream;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &--active {
+      border-color: $choco;
+    }
+  }
+}
+
+.detail-info {
+  &__category {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: $gold;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  &__name {
+    font-family: 'Georgia', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: $choco;
+    margin: 0 0 16px;
+    line-height: 1.3;
+  }
+
+  &__price {
+    font-size: 26px;
+    font-weight: 700;
+    color: $choco-light;
+    margin: 0 0 16px;
+  }
+
+  &__stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+
+    mat-icon { font-size: 16px; height: 16px; width: 16px; }
+
+    &--in { background: #e8f5e9; color: #27ae60; }
+    &--out { background: #fce4e4; color: #c0392b; }
+  }
+
+  &__desc {
+    font-size: 15px;
+    color: $choco-light;
+    line-height: 1.8;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid $border;
+
+    p { margin: 0; }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  &__add-btn {
+    flex: 1;
+    background: $choco !important;
+    color: #fff !important;
+    height: 52px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    mat-icon { font-size: 18px; height: 18px; width: 18px; }
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: $choco-light;
+
+    mat-icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+      color: $gold;
+    }
+  }
+}
+
+.qty-picker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid $border;
+  border-radius: 4px;
+  padding: 4px;
+
+  button { color: $choco !important; }
+
+  &__num {
+    min-width: 36px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: $choco;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-layout { grid-template-columns: 1fr; gap: 32px; }
+  .detail-gallery { position: static; }
+  .detail-info__name { font-size: 24px; }
+}

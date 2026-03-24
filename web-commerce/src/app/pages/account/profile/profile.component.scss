@@ -1,0 +1,212 @@
+$choco: #3D1C02;
+$choco-light: #6B3A2A;
+$gold: #C9A96E;
+$cream: #FDF8F4;
+$border: #E8D5C4;
+
+.page-hero {
+  background: $cream;
+  border-bottom: 1px solid $border;
+  padding: 40px 0;
+  text-align: center;
+  &__container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+  &__title { font-family: 'Georgia', serif; font-size: 32px; color: $choco; margin: 0; }
+}
+
+.account-page {
+  &__container { max-width: 1280px; margin: 0 auto; padding: 48px 24px 80px; }
+}
+
+.account-loading { display: flex; justify-content: center; padding: 80px 0; }
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.profile-nav {
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 12px;
+  overflow: hidden;
+  position: sticky;
+  top: 88px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    font-size: 14px;
+    color: $choco-light;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    border-bottom: 1px solid $border;
+
+    mat-icon { font-size: 18px; height: 18px; width: 18px; }
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: $cream; color: $choco; }
+
+    &--active {
+      background: $cream;
+      color: $choco;
+      font-weight: 600;
+    }
+
+    &--logout {
+      color: #ef4444;
+      &:hover { background: #fce4e4; }
+    }
+  }
+}
+
+.profile-main { display: flex; flex-direction: column; gap: 24px; }
+
+.profile-section {
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 28px;
+
+  &__title {
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    color: $choco;
+    margin: 0 0 24px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .profile-section__title { margin: 0; }
+  }
+
+  &__add-btn {
+    color: $choco !important;
+    border-color: $border !important;
+    font-size: 13px;
+  }
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  mat-form-field { width: 100%; }
+
+  &__row {
+    display: flex;
+    gap: 16px;
+    mat-form-field { flex: 1; }
+    @media (max-width: 600px) { flex-direction: column; gap: 0; }
+  }
+
+  &__save {
+    grid-column: 1 / -1;
+    background: $choco !important;
+    color: #fff !important;
+    height: 48px;
+    font-size: 14px;
+    font-weight: 600;
+    justify-self: start;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
+.address-form {
+  background: $cream;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    mat-form-field { width: 100%; }
+  }
+
+  &__full { width: 100%; }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  &__save {
+    background: $choco !important;
+    color: #fff !important;
+  }
+}
+
+.address-list { display: flex; flex-direction: column; gap: 12px; }
+
+.address-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  gap: 16px;
+
+  &__info {
+    flex: 1;
+
+    p { font-size: 13px; color: $choco-light; margin: 4px 0 0; line-height: 1.5; }
+  }
+
+  &__top { display: flex; align-items: center; gap: 8px; }
+
+  &__label { font-size: 14px; color: $choco; font-weight: 600; }
+
+  &__default {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: $gold;
+    color: $choco;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    button { font-size: 13px; color: $choco-light !important; }
+  }
+
+  &__del {
+    color: #bbb !important;
+    &:hover { color: #ef4444 !important; }
+  }
+}
+
+.address-empty { font-size: 14px; color: $choco-light; text-align: center; padding: 20px 0; }
+
+@media (max-width: 768px) {
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-nav { position: static; }
+  .profile-form { grid-template-columns: 1fr; }
+  .address-form__row { grid-template-columns: 1fr; }
+}

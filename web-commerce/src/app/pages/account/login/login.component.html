@@ -1,0 +1,48 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card__logo">
+      <span class="auth-card__logo-main">TAN</span>
+      <span class="auth-card__logo-sub">patisserie</span>
+    </div>
+    <h1 class="auth-card__title">{{ 'login.title' | translate }}</h1>
+    <p class="auth-card__subtitle">{{ 'login.subtitle' | translate }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <mat-form-field appearance="outline" class="auth-form__field">
+        <mat-label>{{ 'login.email' | translate }}</mat-label>
+        <input matInput formControlName="email" type="email" autocomplete="email" />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+          <mat-error>{{ 'login.required' | translate }}</mat-error>
+        }
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>{{ 'login.invalidEmail' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="auth-form__field">
+        <mat-label>{{ 'login.password' | translate }}</mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="current-password" />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+          <mat-error>{{ 'login.required' | translate }}</mat-error>
+        }
+        @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
+          <mat-error>{{ 'login.minLength' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-flat-button type="submit" class="auth-form__submit" [disabled]="loading">
+        @if (loading) { <mat-spinner diameter="20"></mat-spinner> } @else { {{ 'login.signIn' | translate }} }
+      </button>
+    </form>
+
+    <p class="auth-card__footer">
+      {{ 'login.noAccount' | translate }}
+      <a routerLink="/account/register" class="auth-card__link">{{ 'login.registerHere' | translate }}</a>
+    </p>
+  </div>
+</div>

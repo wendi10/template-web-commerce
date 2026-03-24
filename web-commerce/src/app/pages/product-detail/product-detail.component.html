@@ -1,0 +1,121 @@
+@if (loading()) {
+<div class="detail-loading">
+    <mat-spinner diameter="48"></mat-spinner>
+</div>
+} @else if (!product()) {
+<div class="detail-error">
+    <mat-icon>broken_image</mat-icon>
+    <h3>{{ 'productDetail.notFound' | translate }}</h3>
+    <a routerLink="/products" mat-flat-button>{{ 'productDetail.browse' | translate }}</a>
+</div>
+} @else {
+<div class="detail-page">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <div class="breadcrumb__container">
+            <a routerLink="/" class="breadcrumb__link">{{ 'productDetail.home' | translate }}</a>
+            <mat-icon class="breadcrumb__sep">chevron_right</mat-icon>
+            <a routerLink="/products" class="breadcrumb__link">{{ 'productDetail.shop' | translate }}</a>
+            @if (product()!.category) {
+            <mat-icon class="breadcrumb__sep">chevron_right</mat-icon>
+            <a [routerLink]="['/products']" [queryParams]="{category: product()!.category!.id}"
+                class="breadcrumb__link">
+                {{ product()!.category!.name }}
+            </a>
+            }
+            <mat-icon class="breadcrumb__sep">chevron_right</mat-icon>
+            <span class="breadcrumb__current">{{ product()!.name }}</span>
+        </div>
+    </nav>
+
+    <div class="detail-page__container">
+        <div class="detail-layout">
+            <!-- Images -->
+            <div class="detail-gallery">
+                <div class="detail-gallery__main">
+                    <img [src]="selectedImage()?.url || 'assets/placeholder.jpg'"
+                        [alt]="selectedImage()?.alt_text || product()!.name" class="detail-gallery__main-img" />
+                </div>
+                @if (product()!.images && product()!.images!.length > 1) {
+                <div class="detail-gallery__thumbs">
+                    @for (img of product()!.images; track img.id) {
+                    <button class="detail-gallery__thumb"
+                        [class.detail-gallery__thumb--active]="selectedImage()?.id === img.id"
+                        (click)="selectImage(img)">
+                        <img [src]="img.url" [alt]="img.alt_text || product()!.name" />
+                    </button>
+                    }
+                </div>
+                }
+            </div>
+
+            <!-- Info -->
+            <div class="detail-info">
+                @if (product()!.category) {
+                <span class="detail-info__category">{{ product()!.category!.name }}</span>
+                }
+                <h1 class="detail-info__name">{{ product()!.name }}</h1>
+                <p class="detail-info__price">{{ price }}</p>
+
+                <!-- Stock Badge -->
+                @if (inStock) {
+                <span class="detail-info__stock detail-info__stock--in">
+                    <mat-icon>check_circle</mat-icon> {{ 'productDetail.inStock' | translate }} ({{ product()!.stock }} {{ 'productDetail.available' | translate }})
+                </span>
+                } @else {
+                <span class="detail-info__stock detail-info__stock--out">
+                    <mat-icon>cancel</mat-icon> {{ 'productDetail.outOfStock' | translate }}
+                </span>
+                }
+
+                <!-- Description -->
+                <div class="detail-info__desc">
+                    <p>{{ product()!.description }}</p>
+                </div>
+
+                <!-- Quantity + Add to Cart -->
+                @if (inStock) {
+                <div class="detail-info__actions">
+                    <div class="qty-picker">
+                        <button mat-icon-button (click)="quantity = quantity > 1 ? quantity - 1 : 1"
+                            [disabled]="quantity <= 1" [attr.aria-label]="'cartDrawer.decrease' | translate">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        <span class="qty-picker__num">{{ quantity }}</span>
+                        <button mat-icon-button
+                            (click)="quantity = quantity < product()!.stock ? quantity + 1 : quantity"
+                            [disabled]="quantity >= product()!.stock" [attr.aria-label]="'cartDrawer.increase' | translate">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+
+                    <button mat-flat-button class="detail-info__add-btn" [disabled]="addingToCart()"
+                        (click)="addToCart()">
+                        @if (addingToCart()) {
+                        <mat-spinner diameter="20"></mat-spinner>
+                        } @else {
+                        <ng-container>
+                            <mat-icon>shopping_bag</mat-icon>
+                            {{ 'productDetail.addToCart' | translate }}
+                        </ng-container>
+                        }
+                    </button>
+                </div>
+                }
+
+                <!-- Meta -->
+                <div class="detail-info__meta">
+                    <div class="detail-info__meta-item">
+                        <mat-icon>local_shipping</mat-icon>
+                        <span>{{ 'productDetail.freeDelivery' | translate }}</span>
+                    </div>
+                    <div class="detail-info__meta-item">
+                        <mat-icon>eco</mat-icon>
+                        <span>{{ 'productDetail.freshGuarantee' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
